@@ -9,7 +9,6 @@ import org.simbrain.workspace.WorkspaceSerializer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 
 import static org.simbrain.util.Utils.getDoubleMatrix;
@@ -22,20 +21,18 @@ public class ProcessPredictions {
      * load already trained network(s), validate on pre-existing input data, and save outputs
      * in .csv format.
      */
-    public static void main(String[] args) throws IOException {
+    int numNetsToProcess = 12;
+
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         String networkLocation = "/home/jluhrsen/jamo/NNet/SimBrain/jamo_networks";
         String inputDataLocation = "/home/jluhrsen/jamo/OpenDaylight/git/nfl_examples/resources";
         File CombinedPredictionDataFileCsv = new File(networkLocation + "/" + "combined_predictions.csv");
-        FileOutputStream fCombined = null;
+        FileOutputStream fCombined = new FileOutputStream(CombinedPredictionDataFileCsv);
+        CSVPrinter fCombinedPrinter = new CSVPrinter(fCombined);
 
-        try {
-            fCombined = new FileOutputStream(CombinedPredictionDataFileCsv);
-        } catch (Exception var4) {
-            System.out.println("Could not open file stream: " + var4.toString());
-        }
+        for (int netNumber = 1; netNumber <= this.numNetsToProcess; netNumber++) {
 
-        for (int netNumber = 1; netNumber <= 13; netNumber++) {
             String netFilePrefix = "net" + String.format("%03d", netNumber);
             File networkXmlFile = new File(networkLocation + "/" + netFilePrefix + ".xml");
             File inputDataFile = new File(inputDataLocation + "/2016_examples_normalized_no_headers.csv");
@@ -76,35 +73,17 @@ public class ProcessPredictions {
                 predictions[row][1] = output2;
             }
 
+            // have to write to csv with these java libs, but like to see results in ods for personal reasons
             File predictionDataFileCsv = new File(networkLocation + "/" + netFilePrefix + "_predictions.csv");
             File predictionDataFileOds = new File(networkLocation + "/" + netFilePrefix + "_predictions.ods");
-            FileOutputStream f = null;
 
-            try {
-                f = new FileOutputStream(predictionDataFileCsv);
-            } catch (Exception var4) {
-                System.out.println("Could not open file stream: " + var4.toString());
-            }
+            // combined prediction file is open from the beginning.
+            predictionFileWriter(fCombinedPrinter, predictionDataFileCsv.getName(), predictions);
 
-            if (f != null) {
-                CSVPrinter thePrinter = new CSVPrinter(f);
-                thePrinter.printlnComment("");
-                thePrinter.printlnComment("File: " + predictionDataFileCsv.getName());
-                thePrinter.printlnComment("");
-                thePrinter.println();
-                thePrinter.println(predictions);
-                thePrinter.println();
-            }
-
-            if (fCombined != null) {
-                CSVPrinter thePrinter = new CSVPrinter(fCombined);
-                thePrinter.printlnComment("");
-                thePrinter.printlnComment("File: " + predictionDataFileCsv.getName());
-                thePrinter.printlnComment("");
-                thePrinter.println();
-                thePrinter.println(predictions);
-                thePrinter.println();
-            }
+            // we also create individual prediction files per net, so have to create a new csvprinter each time
+            FileOutputStream f = new FileOutputStream(predictionDataFileCsv);
+            CSVPrinter filePrinter = new CSVPrinter(f);
+            predictionFileWriter(filePrinter, predictionDataFileCsv.getName(), predictions);
 
             try {
                 // opening .csv files with libreoffice calc forces an import dialog every time.  converting to .ods
@@ -116,5 +95,15 @@ public class ProcessPredictions {
             }
             predictionDataFileCsv.delete();
         }
+    }
+
+    private static void predictionFileWriter(CSVPrinter predictionPrinter, String netName, String[][] data) {
+        // just doing the basic writing and formating of the output data to the csv file
+        predictionPrinter.printlnComment("");
+        predictionPrinter.printlnComment("File: " + netName);
+        predictionPrinter.printlnComment("");
+        predictionPrinter.println();
+        predictionPrinter.println(data);
+        predictionPrinter.println();
     }
 }
