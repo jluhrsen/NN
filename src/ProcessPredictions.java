@@ -21,7 +21,7 @@ public class ProcessPredictions {
      * load already trained network(s), validate on pre-existing input data, and save outputs
      * in .csv format.
      */
-    int numNetsToProcess = 12;
+    private static int numNetsToProcess = 12;
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -31,7 +31,7 @@ public class ProcessPredictions {
         FileOutputStream fCombined = new FileOutputStream(CombinedPredictionDataFileCsv);
         CSVPrinter fCombinedPrinter = new CSVPrinter(fCombined);
 
-        for (int netNumber = 1; netNumber <= this.numNetsToProcess; netNumber++) {
+        for (int netNumber = 1; netNumber <= numNetsToProcess; netNumber++) {
 
             String netFilePrefix = "net" + String.format("%03d", netNumber);
             File networkXmlFile = new File(networkLocation + "/" + netFilePrefix + ".xml");
