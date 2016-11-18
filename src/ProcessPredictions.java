@@ -21,7 +21,10 @@ public class ProcessPredictions {
      * load already trained network(s), validate on pre-existing input data, and save outputs
      * in .csv format.
      */
-    private static int numNetsToProcess = 12;
+    private static int numNetsToProcess = 4;
+    private static String netName = "autonetnet";
+    //private static String outputLayerLabel = "output";
+    private static String outputLayerLabel = "Layer 3";
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -33,7 +36,7 @@ public class ProcessPredictions {
 
         for (int netNumber = 1; netNumber <= numNetsToProcess; netNumber++) {
 
-            String netFilePrefix = "net" + String.format("%03d", netNumber);
+            String netFilePrefix = netName + String.format("%03d", netNumber);
             File networkXmlFile = new File(networkLocation + "/" + netFilePrefix + ".xml");
             File inputDataFile = new File(inputDataLocation + "/2016_examples_normalized_no_headers.csv");
             // pull input data in to array
@@ -53,7 +56,7 @@ public class ProcessPredictions {
             BackpropNetwork bpNet = (BackpropNetwork) groupList.get(0);
 
             // the output layer was renamed to "output" in the simbrain GUI before saving.
-            NeuronGroup outputNeurons = bpNet.getNeuronGroupByLabel("output");
+            NeuronGroup outputNeurons = bpNet.getNeuronGroupByLabel(outputLayerLabel);
 
             // hard coded 10 x 2 prediction array
             String predictions[][] = new String[numberOfExamples][numberOfOutputs];
