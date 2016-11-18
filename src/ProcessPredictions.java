@@ -21,10 +21,10 @@ public class ProcessPredictions {
      * load already trained network(s), validate on pre-existing input data, and save outputs
      * in .csv format.
      */
-    private static int numNetsToProcess = 4;
-    private static String netName = "autonetnet";
-    //private static String outputLayerLabel = "output";
-    private static String outputLayerLabel = "Layer 3";
+    private static int numNetsToProcess = 12;
+    private static String netName = "net";
+    private static String outputLayerLabel = "output";
+    //private static String outputLayerLabel = "Layer 3";
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
