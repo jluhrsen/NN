@@ -18,13 +18,16 @@ class NetworkTrainer {
      *
      * @param args
      */
+    private static final int netStartNumber = 8;
+    private static final int netStopNumber = 8;
+
     public static void main(String[] args) throws Trainer.DataNotInitializedException, IOException {
-        String networkLocation = "/home/jluhrsen/jamo/NNet/SimBrain/jamo_networks";
-        int numNetsToTrain = 5;
-        for (int netNumber = 1; netNumber <= numNetsToTrain; netNumber++) {
+        String networkLocation = "/home/jluhrsen/jamo/NNet/SimBrain/jamo_networks/autonets/";
+        for (int netNumber = netStartNumber; netNumber <= netStopNumber; netNumber++) {
             String netFilePrefix = "autonet" + String.format("%03d", netNumber);
             OutputStream savedNetFile = new FileOutputStream(networkLocation + netFilePrefix + ".xml");
             test(savedNetFile);
+            savedNetFile.flush();
             savedNetFile.close();
         }
     }
@@ -75,7 +78,7 @@ class NetworkTrainer {
         trainer.setLearningRate(lr);
         System.out.println("----Training----");
         double mse = 1.0;
-        while (mse > 0.010) {
+        while (mse >= 0.001) {
             trainer.iterate();
             mse = trainer.getError();
             System.out.println("MSE: " + mse);

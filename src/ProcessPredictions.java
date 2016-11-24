@@ -21,20 +21,22 @@ public class ProcessPredictions {
      * load already trained network(s), validate on pre-existing input data, and save outputs
      * in .csv format.
      */
-    private static int numNetsToProcess = 12;
-    private static String netName = "net";
-    private static String outputLayerLabel = "output";
-    //private static String outputLayerLabel = "Layer 3";
+    private static final int netStartNumber = 7;
+    private static final int netStopNumber = 7;
+    private static String netName = "autonet";
+    //TODO: see if we can manually rename output to Layer 3 in the netxxx.xmls so we don't have to toggle this always
+    //private static String outputLayerLabel = "output";
+    private static String outputLayerLabel = "Layer 3";
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        String networkLocation = "/home/jluhrsen/jamo/NNet/SimBrain/jamo_networks";
+        String networkLocation = "/home/jluhrsen/jamo/NNet/SimBrain/jamo_networks/autonets/";
         String inputDataLocation = "/home/jluhrsen/jamo/OpenDaylight/git/nfl_examples/resources";
         File CombinedPredictionDataFileCsv = new File(networkLocation + "/" + "combined_predictions.csv");
         FileOutputStream fCombined = new FileOutputStream(CombinedPredictionDataFileCsv);
         CSVPrinter fCombinedPrinter = new CSVPrinter(fCombined);
 
-        for (int netNumber = 1; netNumber <= numNetsToProcess; netNumber++) {
+        for (int netNumber = netStartNumber; netNumber <= netStopNumber; netNumber++) {
 
             String netFilePrefix = netName + String.format("%03d", netNumber);
             File networkXmlFile = new File(networkLocation + "/" + netFilePrefix + ".xml");
