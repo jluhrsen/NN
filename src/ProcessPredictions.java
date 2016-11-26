@@ -21,8 +21,8 @@ public class ProcessPredictions {
      * load already trained network(s), validate on pre-existing input data, and save outputs
      * in .csv format.
      */
-    private static final int netStartNumber = 7;
-    private static final int netStopNumber = 7;
+    private static final int netStartNumber = 11;
+    private static final int netStopNumber = 13;
     private static String netName = "autonet";
     //TODO: see if we can manually rename output to Layer 3 in the netxxx.xmls so we don't have to toggle this always
     //private static String outputLayerLabel = "output";

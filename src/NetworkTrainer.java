@@ -18,11 +18,11 @@ class NetworkTrainer {
      *
      * @param args
      */
-    private static final int netStartNumber = 8;
-    private static final int netStopNumber = 8;
+    private static final int netStartNumber = 14;
+    private static final int netStopNumber = 15;
 
     public static void main(String[] args) throws Trainer.DataNotInitializedException, IOException {
-        String networkLocation = "/home/jluhrsen/jamo/NNet/SimBrain/jamo_networks/autonets/";
+        String networkLocation = "./networks/autonets/";
         for (int netNumber = netStartNumber; netNumber <= netStopNumber; netNumber++) {
             String netFilePrefix = "autonet" + String.format("%03d", netNumber);
             OutputStream savedNetFile = new FileOutputStream(networkLocation + netFilePrefix + ".xml");
@@ -37,7 +37,7 @@ class NetworkTrainer {
      * @param savedNetFile
      */
     public static void test(OutputStream savedNetFile) throws Trainer.DataNotInitializedException, IOException {
-        String dataLocation = "/home/jluhrsen/jamo/OpenDaylight/git/nfl_examples/resources/data";
+        String dataLocation = "./data";
         File inputDataFile = new
                 File(dataLocation + "/aprox1200_most_recent_with_dvoa_no_teams_normalized_input_no_header.csv");
         File expectedResultsDataFile = new
