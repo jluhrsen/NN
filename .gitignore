@@ -1,0 +1,6 @@
+data
+networks
+*.csv
+tmp/
+out/
+.vagrant
