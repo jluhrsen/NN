@@ -11,20 +11,19 @@ import org.simbrain.util.*;
 import org.simbrain.workspace.*;
 import java.io.*;
 import java.util.Random;
+import java.util.UUID;
 
 class NetworkTrainer {
-    /**
-     * Test method.
-     *
-     * @param args
-     */
-    private static final int netStartNumber = 14;
-    private static final int netStopNumber = 15;
+
+    private static final int numNetsToTrain = 1;
+    private static UUID uuid = UUID.randomUUID();
+    private static File inputDataFile = new File("./data/aprox1200_most_recent_with_dvoa_no_teams_normalized_input_no_header.csv");
+    private static File expectedResultsDataFile = new File("./data/aprox1200_most_recent_with_dvoa_no_teams_normalized_output_no_header.csv");
 
     public static void main(String[] args) throws Trainer.DataNotInitializedException, IOException {
         String networkLocation = "./networks/autonets/";
-        for (int netNumber = netStartNumber; netNumber <= netStopNumber; netNumber++) {
-            String netFilePrefix = "autonet" + String.format("%03d", netNumber);
+        for (int netNumber = 1; netNumber <= numNetsToTrain; netNumber++) {
+            String netFilePrefix = "autonet-" + uuid;
             OutputStream savedNetFile = new FileOutputStream(networkLocation + netFilePrefix + ".xml");
             test(savedNetFile);
             savedNetFile.flush();
@@ -37,11 +36,6 @@ class NetworkTrainer {
      * @param savedNetFile
      */
     public static void test(OutputStream savedNetFile) throws Trainer.DataNotInitializedException, IOException {
-        String dataLocation = "./data";
-        File inputDataFile = new
-                File(dataLocation + "/aprox1200_most_recent_with_dvoa_no_teams_normalized_input_no_header.csv");
-        File expectedResultsDataFile = new
-                File(dataLocation + "/aprox1200_most_recent_with_dvoa_no_teams_normalized_output_no_header.csv");
 
         Workspace ws = new Workspace();
         Network network;
@@ -77,8 +71,14 @@ class NetworkTrainer {
 
         trainer.setLearningRate(lr);
         System.out.println("----Training----");
+        int iterations = 0;
         double mse = 1.0;
         while (mse >= 0.001) {
+            iterations++;
+            // save the net every 100 iterations of training
+            if (iterations % 100 == 0) {
+                networkComponent.save(savedNetFile, "xml");
+            }
             trainer.iterate();
             mse = trainer.getError();
             System.out.println("MSE: " + mse);

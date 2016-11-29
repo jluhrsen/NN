@@ -40,6 +40,7 @@ public class ProcessPredictions {
 
             String netFilePrefix = netName + String.format("%03d", netNumber);
             File networkXmlFile = new File(networkLocation + "/" + netFilePrefix + ".xml");
+
             File inputDataFile = new File(inputDataLocation + "/2016_examples_normalized_no_headers.csv");
             // pull input data in to array
             double inputData[][] = getDoubleMatrix(inputDataFile);
