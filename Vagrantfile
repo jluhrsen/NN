@@ -18,32 +18,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_x11 = true
 
   # Box setup (specs, tools, etc)
-  config.vm.define "nn1" do |nn1|
+  config.vm.define "nn" do |nn|
 
-    nn1.vm.hostname = "nn1"
+    nn.vm.hostname = "nn"
 
     # Configure 4G RAM for virtualbox or libvirt.
-    nn1.vm.provider :virtualbox do |c|
+    nn.vm.provider :virtualbox do |c|
       c.memory = 2048
       c.cpus = 2
       c.name = "NN1"
     end
 
     # Build Vagrant box based on Fedora 25
-    nn1.vm.box = "fedora/25-cloud-base"
+    nn.vm.box = "fedora/25-cloud-base"
 
     # Install dependencies and tools from dnf
-    nn1.vm.provision "shell",
+    nn.vm.provision "shell",
       inline: "dnf install -y --nogpgcheck git git-review java-openjdk java-1.8.0-openjdk-devel xauth ant"
 
-    nn1.vm.provision "shell", inline: "git clone https://github.com/jluhrsen/NN.git"
-    nn1.vm.provision "shell", inline: "git clone https://github.com/jluhrsen/nfl_examples"
-    nn1.vm.provision "shell", inline: "git clone https://github.com/simbrain/simbrain.git"
-    nn1.vm.provision "shell", inline: "cd simbrain; ant"
-    nn1.vm.provision "shell", inline: "echo 'export CLASSPATH=/home/vagrant/simbrain/build/main/Simbrain.jar:./' >> ~vagrant/.bashrc"
-    nn1.vm.provision "shell", inline: "mkdir -p networks/autonets"
-    nn1.vm.provision "shell", inline: "chown -R vagrant:vagrant *"
-    nn1.vm.provision "shell", inline: "cd NN/src; ln -s ../../nfl_examples/resources/data/ data; ln -s ../../networks networks"
+    nn.vm.provision "shell", inline: "git clone https://github.com/jluhrsen/NN.git"
+    nn.vm.provision "shell", inline: "git clone https://github.com/jluhrsen/nfl_examples"
+    nn.vm.provision "shell", inline: "git clone https://github.com/simbrain/simbrain.git"
+    nn.vm.provision "shell", inline: "cd simbrain; ant"
+    nn.vm.provision "shell", inline: "echo 'export CLASSPATH=/home/vagrant/simbrain/build/main/Simbrain.jar:./' >> ~vagrant/.bashrc"
+    nn.vm.provision "shell", inline: "mkdir -p networks/autonets"
+    nn.vm.provision "shell", inline: "chown -R vagrant:vagrant *"
+    nn.vm.provision "shell", inline: "cd NN/src; ln -s ../../nfl_examples/resources/data/ data; ln -s ../../networks networks"
 
   end
 
