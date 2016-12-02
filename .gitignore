@@ -4,3 +4,4 @@ networks
 tmp/
 out/
 .vagrant
+src/client_secrets.json
