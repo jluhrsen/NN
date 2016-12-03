@@ -16,13 +16,13 @@ import java.util.UUID;
 class NetworkTrainer {
 
     private static final int numNetsToTrain = 10;
-    private static UUID uuid = UUID.randomUUID();
     private static File inputDataFile = new File("./data/aprox1200_most_recent_with_dvoa_no_teams_normalized_input_no_header.csv");
     private static File expectedResultsDataFile = new File("./data/aprox1200_most_recent_with_dvoa_no_teams_normalized_output_no_header.csv");
 
     public static void main(String[] args) throws Trainer.DataNotInitializedException, IOException {
         String networkLocation = "./networks/autonets/";
         for (int netNumber = 1; netNumber <= numNetsToTrain; netNumber++) {
+            UUID uuid = UUID.randomUUID();
             String netFileName = "autonet-" + uuid + ".xml";
             File netFile = new File(networkLocation + netFileName);
             OutputStream savedNetFile = new FileOutputStream(netFile);
