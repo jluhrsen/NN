@@ -15,7 +15,7 @@ import java.util.UUID;
 
 class NetworkTrainer {
 
-    private static final int numNetsToTrain = 1;
+    private static final int numNetsToTrain = 10;
     private static UUID uuid = UUID.randomUUID();
     private static File inputDataFile = new File("./data/aprox1200_most_recent_with_dvoa_no_teams_normalized_input_no_header.csv");
     private static File expectedResultsDataFile = new File("./data/aprox1200_most_recent_with_dvoa_no_teams_normalized_output_no_header.csv");
@@ -23,11 +23,15 @@ class NetworkTrainer {
     public static void main(String[] args) throws Trainer.DataNotInitializedException, IOException {
         String networkLocation = "./networks/autonets/";
         for (int netNumber = 1; netNumber <= numNetsToTrain; netNumber++) {
-            String netFilePrefix = "autonet-" + uuid;
-            OutputStream savedNetFile = new FileOutputStream(networkLocation + netFilePrefix + ".xml");
+            String netFileName = "autonet-" + uuid + ".xml";
+            File netFile = new File(networkLocation + netFileName);
+            OutputStream savedNetFile = new FileOutputStream(netFile);
             test(savedNetFile);
             savedNetFile.flush();
             savedNetFile.close();
+
+            FileTransferService transferService = new FileTransferService();
+            transferService.transferFile(networkLocation, netFileName, "/data/autonets/", netFileName);
         }
     }
 
@@ -73,7 +77,8 @@ class NetworkTrainer {
         System.out.println("----Training----");
         int iterations = 0;
         double mse = 1.0;
-        while (mse >= 0.001) {
+        // 0.001
+        while (mse >= 0.033) {
             iterations++;
             // save the net every 100 iterations of training
             if (iterations % 100 == 0) {
