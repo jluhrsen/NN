@@ -22,12 +22,6 @@ public class ProcessPredictions {
      * load already trained network(s), validate on pre-existing input data, and save outputs
      * in .csv format.
      */
-    private static final int netStartNumber = 11;
-    private static final int netStopNumber = 13;
-    private static String netName = "autonet";
-    //TODO: see if we can manually rename output to Layer 3 in the netxxx.xmls so we don't have to toggle this always
-    //private static String outputLayerLabel = "output";
-    private static String outputLayerLabel = "Layer 3";
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -61,7 +55,7 @@ public class ProcessPredictions {
                 BackpropNetwork bpNet = (BackpropNetwork) groupList.get(0);
 
                 // the output layer was renamed to "output" in the simbrain GUI before saving.
-                NeuronGroup outputNeurons = bpNet.getNeuronGroupByLabel(outputLayerLabel);
+                NeuronGroup outputNeurons = bpNet.getNeuronGroupByLabel("Layer 3");
 
                 // hard coded 10 x 2 prediction array
                 String predictions[][] = new String[numberOfExamples][numberOfOutputs];

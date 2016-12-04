@@ -15,7 +15,7 @@ import java.util.UUID;
 
 class NetworkTrainer {
 
-    private static final int numNetsToTrain = 10;
+    private static final int numNetsToTrain = 1;
     private static File inputDataFile = new File("./data/aprox1200_most_recent_with_dvoa_no_teams_normalized_input_no_header.csv");
     private static File expectedResultsDataFile = new File("./data/aprox1200_most_recent_with_dvoa_no_teams_normalized_output_no_header.csv");
 
@@ -77,12 +77,12 @@ class NetworkTrainer {
         System.out.println("----Training----");
         int iterations = 0;
         double mse = 1.0;
-        // 0.001
-        while (mse >= 0.033) {
+        while (mse >= 0.001) {
             iterations++;
             // save the net every 100 iterations of training
             if (iterations % 100 == 0) {
-                networkComponent.save(savedNetFile, "xml");
+                // FIXME: this is not saving the net as one, it's appending the net to the last saved net.  big bug.
+                //networkComponent.save(savedNetFile, "xml");
             }
             trainer.iterate();
             mse = trainer.getError();
