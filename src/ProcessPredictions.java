@@ -25,7 +25,9 @@ public class ProcessPredictions {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        String networkLocation = "/home/jluhrsen/jamo/NNet/SimBrain/jamo_networks/autonets/";
+        String networkLocation = "/tmp/autonets/";
+        FileTransferService transferService = new FileTransferService();
+        transferService.getFiles("/data/autonets/*", networkLocation);
         String inputDataLocation = "/home/jluhrsen/jamo/OpenDaylight/git/nfl_examples/resources";
         File CombinedPredictionDataFileCsv = new File(networkLocation + "/" + "combined_predictions.csv");
         FileOutputStream fCombined = new FileOutputStream(CombinedPredictionDataFileCsv);

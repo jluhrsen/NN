@@ -42,4 +42,30 @@ public class FileTransferService {
         session.disconnect();
 
     }
+
+    public void getFiles(String remoteFolder, String localFolder) {
+        try {
+            jsch = new JSch();
+            session = jsch.getSession(username, host, 22);
+            jsch.setKnownHosts(khfile);
+            jsch.addIdentity(identityfile);
+            session.connect();
+
+            channel = session.openChannel("sftp");
+            channel.connect();
+            c = (ChannelSftp) channel;
+
+        } catch (Exception e) { 	e.printStackTrace();	}
+
+        try {
+            System.out.println("Getting Files from: " + remoteFolder);
+            c.get(remoteFolder, localFolder);
+
+        } catch (Exception e) {	e.printStackTrace();	}
+
+        c.disconnect();
+        session.disconnect();
+
+    }
+
 }
