@@ -81,8 +81,8 @@ class NetworkTrainer {
             iterations++;
             // save the net every 100 iterations of training
             if (iterations % 100 == 0) {
-                // FIXME: this is not saving the net as one, it's appending the net to the last saved net.  big bug.
-                //networkComponent.save(savedNetFile, "xml");
+                OutputStream backupNetFile = new FileOutputStream("/tmp/backupNet.xml");
+                networkComponent.save(backupNetFile, "xml");
             }
             trainer.iterate();
             mse = trainer.getError();
