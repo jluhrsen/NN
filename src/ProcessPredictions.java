@@ -25,11 +25,11 @@ public class ProcessPredictions {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        boolean retriveNetworks = true;
+        boolean retrieveNetworks = true;
         String networkLocation = "/tmp/autonets/";
         FileTransferService transferService = new FileTransferService();
 
-        if (retriveNetworks) {transferService.getFiles("/data/autonets/*", networkLocation);}
+        if (retrieveNetworks) {transferService.getFiles("/data/autonets/*", networkLocation);}
 
         String inputDataLocation = "/home/jluhrsen/jamo/OpenDaylight/git/nfl_examples/resources";
         File CombinedPredictionDataFileCsv = new File(networkLocation + "/" + "combined_predictions.csv");

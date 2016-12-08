@@ -5,3 +5,5 @@ tmp/
 out/
 .vagrant
 src/client_secrets.json
+input_data.csv
+output_data.csv

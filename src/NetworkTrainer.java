@@ -16,10 +16,16 @@ import java.util.UUID;
 class NetworkTrainer {
 
     private static final int numNetsToTrain = 1;
-    private static File inputDataFile = new File("./data/aprox1200_most_recent_with_dvoa_no_teams_normalized_input_no_header.csv");
-    private static File expectedResultsDataFile = new File("./data/aprox1200_most_recent_with_dvoa_no_teams_normalized_output_no_header.csv");
+    private static File inputDataFile = new File("./input_data.csv");
+    private static File expectedResultsDataFile = new File("./output_data.csv");
 
     public static void main(String[] args) throws Trainer.DataNotInitializedException, IOException {
+
+        FileTransferService trainingFileTransfer = new FileTransferService();
+        trainingFileTransfer.getFiles("/data/trainingInput/input_data.csv", "./input_data.csv");
+        trainingFileTransfer.getFiles("/data/trainingInput/output_data.csv", "./output_data.csv");
+
+
         String networkLocation = "./networks/autonets/";
         for (int netNumber = 1; netNumber <= numNetsToTrain; netNumber++) {
             UUID uuid = UUID.randomUUID();
